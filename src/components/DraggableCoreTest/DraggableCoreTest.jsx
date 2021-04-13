@@ -1,4 +1,5 @@
 import React from 'react';
+import { DraggableCore } from 'react-draggable';
 
 
 const DraggableCoreTest = (props) => {
@@ -11,8 +12,13 @@ const DraggableCoreTest = (props) => {
   }
 
   return (
-    <div style={containerStyles}>
-    </div>
+    <DraggableCore 
+      onStart={() => console.log('hi')}
+      onDrag={(e) => console.log(e)}
+      onMouseDown={(e) => console.log(e)}
+    >
+      <div style={containerStyles}></div>
+    </DraggableCore>
   )
 }
 
