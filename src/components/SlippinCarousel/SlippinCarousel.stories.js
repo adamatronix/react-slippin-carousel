@@ -6,7 +6,23 @@ export default {
   component: SlippinCarousel
 };
 
+const placeholder = {
+  width: '300px',
+  height: '300px',
+  background: '#ccc',
+  marginLeft: '10px'
+}
+
 export const Default = () => (
   <SlippinCarousel>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
   </SlippinCarousel>
 );
