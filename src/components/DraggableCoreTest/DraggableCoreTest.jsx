@@ -13,9 +13,9 @@ const DraggableCoreTest = (props) => {
 
   return (
     <DraggableCore 
-      onStart={() => console.log('hi')}
+      onStart={() => console.log('start')}
       onDrag={(e) => console.log(e)}
-      onMouseDown={(e) => console.log(e)}
+      onStop={(e) => console.log('stop')}
     >
       <div style={containerStyles}></div>
     </DraggableCore>
