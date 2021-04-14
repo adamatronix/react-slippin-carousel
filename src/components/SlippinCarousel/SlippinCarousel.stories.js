@@ -21,5 +21,17 @@ export const Default = () => (
   <SlippinCarousel>
     <div style={placeholder}></div>
     <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={{...placeholder, ...red}}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
+    <div style={placeholder}></div>
   </SlippinCarousel>
 );
