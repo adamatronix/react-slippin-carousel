@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^12.8.3",
     "classnames": "^2.2.6",
     "env-cmd": "^10.1.0",
+    "gsap": "^3.6.1",
     "react-draggable": "^4.4.3",
     "sass": "^1.32.8",
     "web-vitals": "^1.1.1"
