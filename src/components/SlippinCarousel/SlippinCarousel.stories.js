@@ -1,5 +1,7 @@
 import React from 'react';
 import SlippinCarousel from './SlippinCarousel';
+import { generatePhotoPlaceholderURL } from 'react-placeholder-image';
+
 
 export default {
   title: 'SlippinCarousel',
@@ -17,21 +19,18 @@ const red = {
   background: 'red'
 }
 
+
+const imageArray = new Array(10).fill();
+
 export const Default = () => (
   <SlippinCarousel>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={{...placeholder, ...red}}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
-    <div style={placeholder}></div>
+    { imageArray.map((item, index) => {
+       const image = generatePhotoPlaceholderURL(300, 300);
+        return (
+          <div style={placeholder}>
+            <img src={image}  style={{pointerEvents: 'none'}} />
+          </div>
+        )
+    })}
   </SlippinCarousel>
 );
