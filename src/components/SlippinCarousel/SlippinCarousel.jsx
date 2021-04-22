@@ -8,6 +8,9 @@ import styles from './styles/slippin-carousel.module.scss';
 const SlippinCarousel = (props) => {
   const { children } = props;
   const activeIndex = useRef(0);
+  const containerEl = useRef();
+  const thresholdStop = useRef();
+  const thresholdActive = useRef(false);
   const itemEl = useRef(new Array);
   const Active = useRef(0);
   const dragStart = useRef();
@@ -18,6 +21,7 @@ const SlippinCarousel = (props) => {
 
   useEffect(() => {
     pinnedItems.current[0] = true;
+    thresholdStop.current = calculateThresholdStopper();
     getAnimationPositions(Active.current);
   }, []);
 
@@ -57,6 +61,30 @@ const SlippinCarousel = (props) => {
     });
   }
 
+  const setAnimationExplicitly = (pos) => {
+    itemEl.current.forEach((child,index) => { 
+      if(!pinnedItems.current[index]) {
+        TweenMax.to(child, 
+          .2, 
+          { x: pos, 
+            y: 0,
+          }
+        );
+      }
+    });
+  }
+
+  const calculateThresholdStopper = () => {
+    const containerWidth = containerEl.current.offsetWidth;
+    const containerX = containerEl.current.getBoundingClientRect().x;
+    const totalItems = itemEl.current.length;
+    const lastItem = itemEl.current[totalItems-1];
+    const lastItemWidth = lastItem.offsetWidth;
+    const originalX = lastItem.getBoundingClientRect().x;
+
+    return (containerWidth - originalX) - lastItemWidth + containerX;
+  }
+
   const setAnimationByDrag = (diff) => {
     //console.log(items);
     
@@ -73,24 +101,42 @@ const SlippinCarousel = (props) => {
         const pinPoint = width * (index*-1);
 
         if(!pinnedItems.current[index] && newX >= pinPoint) {
+      
           if(!cachedPos) {
             cachedPos = newX;
           } else {
             newX = cachedPos;
           }
-          TweenMax.to(child, 
-            0, 
-            { x: newX, 
-              y: 0,
-            }
-          );
 
-          if(newX <= pinPoint + (width/2)) {
-            Active.current = index;
-            //console.log(Active.current);
-          }
+          if(newX <= thresholdStop.current) {
+            thresholdActive.current = true;
+            if(pinnedItems.current[index-1])
+              Active.current = index;
+
+            TweenMax.to(child, 
+              0,
+              { x: thresholdStop.current, 
+                y: 0,
+              }
+            );
+
+          } else {
+            TweenMax.to(child, 
+              0, 
+              { x: newX, 
+                y: 0,
+              }
+            );
   
-        } else if(!pinnedItems.current[index] && newX <= pinPoint) {
+            if(newX <= pinPoint + (width/2) && pinPoint >= thresholdStop.current) {
+              Active.current = index;
+              console.log(Active.current);
+            }
+          }
+
+          
+  
+        } else if(!pinnedItems.current[index] && newX <= pinPoint && pinPoint >= thresholdStop.current) {
           TweenMax.to(child, 
             0, 
             { x: pinPoint, 
@@ -112,6 +158,7 @@ const SlippinCarousel = (props) => {
       const reversedItems = itemEl.current.slice().reverse();
 
       let cachedPos = null;
+      thresholdActive.current = false;
 
       for(let i = 0; i < reversedItems.length; i++) {
 
@@ -139,6 +186,11 @@ const SlippinCarousel = (props) => {
           const nextIndex = normalIndex - 1;
 
           if(pinnedItems.current[nextIndex] && newX > pinPoint + (width/2)) {
+            if(nextIndex >= 0) {
+              Active.current = nextIndex;
+              //console.log(Active.current);
+            }
+          } else if(pinnedItems.current[nextIndex] && pinPoint < thresholdStop.current) { 
             if(nextIndex >= 0) {
               Active.current = nextIndex;
               //console.log(Active.current);
@@ -181,7 +233,9 @@ const SlippinCarousel = (props) => {
   }
 
   const onDragEnd = (e) => {
-    getAnimationPositions(Active.current);
+    if(!thresholdActive.current) {
+      getAnimationPositions(Active.current);
+    }
   }
 
   const setReferencePositions = (x) => {
@@ -200,6 +254,7 @@ const SlippinCarousel = (props) => {
   }
 
   const prevClick = () => {
+    thresholdActive.current = false;
     if(Active.current > 0) {
       Active.current--;
     } else {
@@ -209,8 +264,23 @@ const SlippinCarousel = (props) => {
   }
 
   const nextClick = () => {
+    if(thresholdActive.current)
+      return;
+
+    const width = itemWidth.current;
+    const newIndex = Active.current + 1;
+    const pinPoint = width * (newIndex*-1);
+
     if(Active.current < children.length) {
-      Active.current++;
+      if(pinPoint >= thresholdStop.current) {
+        Active.current++;
+      } else {
+        Active.current++;
+        thresholdActive.current = true;
+        setAnimationExplicitly(thresholdStop.current);
+        return;
+      }
+        
     } else {
       Active.current = children.length -1;
     }
@@ -225,15 +295,16 @@ const SlippinCarousel = (props) => {
       <button onClick={prevClick}>Prev</button>
       <button onClick={nextClick}>Next</button>
     </div>
-    <DraggableCore 
-      onStart={onDragStart}
-      onDrag={onDrag}
-      onStop={onDragEnd}
-    >
-      <ul className={styles.container}>
-        { allItems ? allItems : '' }
-      </ul>
-    </DraggableCore>
+    <div ref={containerEl}>
+      <DraggableCore 
+        onStart={onDragStart}
+        onDrag={onDrag}
+        onStop={onDragEnd}>
+        <ul className={styles.container}>
+          { allItems ? allItems : '' }
+        </ul>
+      </DraggableCore>
+    </div>
     </>
   )
 }
