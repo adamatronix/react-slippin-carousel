@@ -32,7 +32,20 @@ const SlippinCarousel = (props) => {
     itemEl.current.forEach((child,index) => {  
       const width = child.offsetWidth;
       itemWidth.current = width;
+      const pinPoint = width * (index*-1);
       const position = getPositionByIndex(active, index, width);
+
+      if(!pinnedItems.current[index] && position <= pinPoint) {
+          console.log('pinned at: ' + pinPoint);
+          pinnedItems.current[index] = pinPoint;
+          const nextIndex = index + 1;
+          if(!pinnedItems.current[nextIndex] && nextIndex < itemEl.current.length) {
+            Active.current = index;
+          }
+      } else if(pinnedItems.current[index] && position > pinPoint){
+        pinnedItems.current[index] = false;
+        console.log('unpinned: ' + index);
+      }
 
       TweenMax.to(child, 
         .2, 
@@ -71,6 +84,11 @@ const SlippinCarousel = (props) => {
               y: 0,
             }
           );
+
+          if(newX <= pinPoint + (width/2)) {
+            Active.current = index;
+            console.log(Active.current);
+          }
   
         } else if(!pinnedItems.current[index] && newX <= pinPoint) {
           TweenMax.to(child, 
@@ -120,11 +138,13 @@ const SlippinCarousel = (props) => {
           );
           const nextIndex = normalIndex - 1;
 
-          if(pinnedItems.current[nextIndex]) {
+          if(pinnedItems.current[nextIndex] && newX > pinPoint + (width/2)) {
             if(nextIndex >= 0) {
               Active.current = nextIndex;
+              console.log(Active.current);
             }
           }
+
           if((newX >= pinPoint + width) && pinnedItems.current[nextIndex]) {
             pinnedItems.current[nextIndex] = false;
           }
