@@ -61,6 +61,19 @@ const SlippinCarousel = (props) => {
     });
   }
 
+  const setAnimationExplicitly = (pos) => {
+    itemEl.current.forEach((child,index) => { 
+      if(!pinnedItems.current[index]) {
+        TweenMax.to(child, 
+          .2, 
+          { x: pos, 
+            y: 0,
+          }
+        );
+      }
+    });
+  }
+
   const calculateThresholdStopper = () => {
     const containerWidth = containerEl.current.offsetWidth;
     const containerX = containerEl.current.getBoundingClientRect().x;
@@ -97,8 +110,11 @@ const SlippinCarousel = (props) => {
 
           if(newX <= thresholdStop.current) {
             thresholdActive.current = true;
+            if(pinnedItems.current[index-1])
+              Active.current = index;
+
             TweenMax.to(child, 
-              0, 
+              0,
               { x: thresholdStop.current, 
                 y: 0,
               }
@@ -174,6 +190,11 @@ const SlippinCarousel = (props) => {
               Active.current = nextIndex;
               //console.log(Active.current);
             }
+          } else if(pinnedItems.current[nextIndex] && pinPoint < thresholdStop.current) { 
+            if(nextIndex >= 0) {
+              Active.current = nextIndex;
+              //console.log(Active.current);
+            }
           }
 
           if((newX >= pinPoint + width) && pinnedItems.current[nextIndex]) {
@@ -233,6 +254,7 @@ const SlippinCarousel = (props) => {
   }
 
   const prevClick = () => {
+    thresholdActive.current = false;
     if(Active.current > 0) {
       Active.current--;
     } else {
@@ -242,8 +264,23 @@ const SlippinCarousel = (props) => {
   }
 
   const nextClick = () => {
+    if(thresholdActive.current)
+      return;
+
+    const width = itemWidth.current;
+    const newIndex = Active.current + 1;
+    const pinPoint = width * (newIndex*-1);
+
     if(Active.current < children.length) {
-      Active.current++;
+      if(pinPoint >= thresholdStop.current) {
+        Active.current++;
+      } else {
+        Active.current++;
+        thresholdActive.current = true;
+        setAnimationExplicitly(thresholdStop.current);
+        return;
+      }
+        
     } else {
       Active.current = children.length -1;
     }
