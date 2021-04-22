@@ -87,7 +87,7 @@ const SlippinCarousel = (props) => {
 
           if(newX <= pinPoint + (width/2)) {
             Active.current = index;
-            console.log(Active.current);
+            //console.log(Active.current);
           }
   
         } else if(!pinnedItems.current[index] && newX <= pinPoint) {
@@ -141,7 +141,7 @@ const SlippinCarousel = (props) => {
           if(pinnedItems.current[nextIndex] && newX > pinPoint + (width/2)) {
             if(nextIndex >= 0) {
               Active.current = nextIndex;
-              console.log(Active.current);
+              //console.log(Active.current);
             }
           }
 
@@ -178,6 +178,10 @@ const SlippinCarousel = (props) => {
 
   const onDragStart = (e) => {
     setReferencePositions(e.clientX);
+  }
+
+  const onDragEnd = (e) => {
+    getAnimationPositions(Active.current);
   }
 
   const setReferencePositions = (x) => {
@@ -224,6 +228,7 @@ const SlippinCarousel = (props) => {
     <DraggableCore 
       onStart={onDragStart}
       onDrag={onDrag}
+      onStop={onDragEnd}
     >
       <ul className={styles.container}>
         { allItems ? allItems : '' }
