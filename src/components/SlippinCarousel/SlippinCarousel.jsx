@@ -229,7 +229,8 @@ const SlippinCarousel = (props) => {
   }
 
   const onDragStart = (e) => {
-    setReferencePositions(e.clientX);
+    const x = e.clientX || e.touches[0].clientX;
+    setReferencePositions(x);
   }
 
   const onDragEnd = (e) => {
@@ -246,8 +247,8 @@ const SlippinCarousel = (props) => {
   }
 
   const onDrag = (e) => { 
-
-    let currentPos = e.clientX;
+    const x = e.clientX || e.touches[0].clientX;
+    let currentPos = x;
     let diff = currentPos - dragStart.current;
     setReferencePositions(currentPos);
     setAnimationByDrag(diff);
