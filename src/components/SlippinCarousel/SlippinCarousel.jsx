@@ -40,7 +40,6 @@ const SlippinCarousel = (props) => {
   }
 
   const getAnimationPositions = (active) => {
-    //console.log(items);
     itemEl.current.forEach((child,index) => {  
       const width = child.offsetWidth;
       itemWidth.current = width;
@@ -48,7 +47,6 @@ const SlippinCarousel = (props) => {
       const position = getPositionByIndex(active, index, width);
 
       if(!pinnedItems.current[index] && position <= pinPoint) {
-          console.log('pinned at: ' + pinPoint);
           pinnedItems.current[index] = pinPoint;
           const nextIndex = index + 1;
           if(!pinnedItems.current[nextIndex] && nextIndex < itemEl.current.length) {
@@ -56,7 +54,6 @@ const SlippinCarousel = (props) => {
           }
       } else if(pinnedItems.current[index] && position > pinPoint){
         pinnedItems.current[index] = false;
-        console.log('unpinned: ' + index);
       }
 
       TweenMax.to(child, 
@@ -94,8 +91,6 @@ const SlippinCarousel = (props) => {
   }
 
   const setAnimationByDrag = (diff) => {
-    //console.log(items);
-    
      if(diff < 0) {
 
       let cachedPos = null;
@@ -138,7 +133,6 @@ const SlippinCarousel = (props) => {
   
             if(newX <= pinPoint + (width/2) && pinPoint >= thresholdStop.current) {
               Active.current = index;
-              console.log(Active.current);
             }
           }
 
@@ -151,7 +145,6 @@ const SlippinCarousel = (props) => {
               y: 0,
             }
           );
-            console.log('pinned at: ' + pinPoint);
             pinnedItems.current[index] = pinPoint;
             const nextIndex = index + 1;
             if(!pinnedItems.current[nextIndex] && nextIndex < itemEl.current.length) {
@@ -176,7 +169,7 @@ const SlippinCarousel = (props) => {
         const originalXPosition = dragInitialPositions.current[normalIndex];
         let newX =  originalXPosition + diff;
         const pinPoint = width * (normalIndex*-1);
-        //console.log(pinnedItems.current);
+
         if(newX <= 0 && !pinnedItems.current[normalIndex]) {
 
           if(!cachedPos) {
@@ -196,12 +189,10 @@ const SlippinCarousel = (props) => {
           if(pinnedItems.current[nextIndex] && newX > pinPoint + (width/2)) {
             if(nextIndex >= 0) {
               Active.current = nextIndex;
-              //console.log(Active.current);
             }
           } else if(pinnedItems.current[nextIndex] && pinPoint < thresholdStop.current) { 
             if(nextIndex >= 0) {
               Active.current = nextIndex;
-              //console.log(Active.current);
             }
           }
 
