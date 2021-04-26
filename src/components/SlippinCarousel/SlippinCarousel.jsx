@@ -6,7 +6,7 @@ import SlippingCarouselItem from './SlippingCarouseItem';
 import styles from './styles/slippin-carousel.module.scss';
 
 const SlippinCarousel = (props) => {
-  const { children } = props;
+  const { children, prevEl, nextEl } = props;
   const activeIndex = useRef(0);
   const containerEl = useRef();
   const thresholdStop = useRef();
@@ -22,6 +22,10 @@ const SlippinCarousel = (props) => {
   useEffect(() => {
     pinnedItems.current[0] = true;
     thresholdStop.current = calculateThresholdStopper();
+    
+    if(prevEl && nextEl)
+      initUIButtons();
+
     getAnimationPositions(Active.current);
   }, []);
 
@@ -30,6 +34,10 @@ const SlippinCarousel = (props) => {
     return index >= active ? (shiftNumber) * width : (index*-1) * width;
   }
 
+  const initUIButtons = () => {
+    prevEl.current.addEventListener('click', prevClick);
+    nextEl.current.addEventListener('click', nextClick);
+  }
 
   const getAnimationPositions = (active) => {
     //console.log(items);
@@ -292,10 +300,6 @@ const SlippinCarousel = (props) => {
 
   return (
     <>
-    <div>
-      <button onClick={prevClick}>Prev</button>
-      <button onClick={nextClick}>Next</button>
-    </div>
     <div ref={containerEl}>
       <DraggableCore 
         onStart={onDragStart}
