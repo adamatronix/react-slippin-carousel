@@ -6,7 +6,7 @@ import SlippingCarouselItem from './SlippingCarouseItem';
 import styles from './styles/slippin-carousel.module.scss';
 
 const SlippinCarousel = (props) => {
-  const { children, prevEl, nextEl } = props;
+  const { children, prevEl, nextEl, itemSize } = props;
   const activeIndex = useRef(0);
   const containerEl = useRef();
   const thresholdStop = useRef();
@@ -222,7 +222,7 @@ const SlippinCarousel = (props) => {
         zIndex: index
       }
       return (
-        <SlippingCarouselItem style={style} ref={(ref) => itemEl.current[index] = ref}>{child}</SlippingCarouselItem>
+        <SlippingCarouselItem style={style} itemSize={itemSize} ref={(ref) => itemEl.current[index] = ref}>{child}</SlippingCarouselItem>
       )
     })
   }

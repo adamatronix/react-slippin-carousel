@@ -9,8 +9,7 @@ export default {
 };
 
 const placeholder = {
-  width: '300px',
-  height: '300px',
+  width: '100%',
   background: '#ccc',
   marginLeft: '10px'
 }
@@ -33,12 +32,12 @@ export const Default = () => {
         <button ref={prevRef}>Prev</button>
         <button ref={nextRef}>Next</button>
       </div>
-      <SlippinCarousel prevEl={prevRef} nextEl={nextRef}>
+      <SlippinCarousel prevEl={prevRef} nextEl={nextRef} itemSize="55%">
       { imageArray.map((item, index) => {
-        const image = generatePhotoPlaceholderURL(300, 300);
+        const image = generatePhotoPlaceholderURL(600, 600);
           return (
             <div style={placeholder}>
-              <img src={image}  style={{pointerEvents: 'none'}} />
+              <img src={image}  style={{pointerEvents: 'none', display: 'block', width: '100%'}} />
             </div>
           )
       })}
