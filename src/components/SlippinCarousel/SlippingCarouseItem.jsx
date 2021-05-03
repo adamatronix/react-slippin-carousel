@@ -2,9 +2,14 @@ import React, { forwardRef } from 'react';
 import styles from './styles/slippin-carousel.module.scss';
 
 const SlippingCarouselItem = (props, ref) => {
-  const { children, ...rest } = props;
+  const { children, itemSize, style, ...rest } = props;
+
+  const itemStyle = {
+    width: itemSize ? itemSize : 'auto'
+  }
+
   return (
-    <li className={styles.item} ref={ref} {...rest}>
+    <li style={{...itemStyle, ...style}} className={styles.item} ref={ref} {...rest}>
       { children }
     </li>
   );
