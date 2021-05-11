@@ -131,7 +131,7 @@ const SlippinCarousel = (props) => {
               }
             );
   
-            if(newX <= pinPoint + (width/2) && pinPoint >= thresholdStop.current) {
+            if(newX <= pinPoint + (width/1.1) && pinPoint >= thresholdStop.current) {
               Active.current = index;
             }
           }
@@ -186,7 +186,7 @@ const SlippinCarousel = (props) => {
           );
           const nextIndex = normalIndex - 1;
 
-          if(pinnedItems.current[nextIndex] && newX > pinPoint + (width/2)) {
+          if(pinnedItems.current[nextIndex] && newX > pinPoint + (width/4)) {
             if(nextIndex >= 0) {
               Active.current = nextIndex;
             }
