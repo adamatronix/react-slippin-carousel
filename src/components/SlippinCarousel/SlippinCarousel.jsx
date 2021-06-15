@@ -3,7 +3,7 @@ import cx from 'classnames/bind';
 import { gsap, TweenMax } from "gsap/all";
 import { DraggableCore } from 'react-draggable';
 import SlippingCarouselItem from './SlippingCarouseItem';
-import styles from './styles/slippin-carousel.module.scss';
+import * as styles from './styles/slippin-carousel.module.scss';
 
 const SlippinCarousel = (props) => {
   const { children, prevEl, nextEl, itemSize } = props;

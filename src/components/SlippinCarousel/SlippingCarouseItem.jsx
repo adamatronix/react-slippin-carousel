@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import styles from './styles/slippin-carousel.module.scss';
+import * as styles from './styles/slippin-carousel.module.scss';
 
 const SlippingCarouselItem = (props, ref) => {
   const { children, itemSize, style, ...rest } = props;
