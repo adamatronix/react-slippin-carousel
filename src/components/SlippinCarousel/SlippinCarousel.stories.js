@@ -18,6 +18,10 @@ const red = {
   background: 'red'
 }
 
+const Section = {
+
+}
+
 
 const imageArray = new Array(10).fill();
 
@@ -28,20 +32,22 @@ export const Default = () => {
   
   return (
     <>
-      <div>
+      <div style={{margin: '100px 0'}}>
         <button ref={prevRef}>Prev</button>
         <button ref={nextRef}>Next</button>
       </div>
-      <SlippinCarousel prevEl={prevRef} nextEl={nextRef} itemSize="55%">
-      { imageArray.map((item, index) => {
-        const image = generatePhotoPlaceholderURL(600, 600);
-          return (
-            <div style={placeholder}>
-              <img src={image}  style={{pointerEvents: 'none', display: 'block', width: '100%'}} />
-            </div>
-          )
-      })}
-    </SlippinCarousel>
+      <div style={Section}>
+        <SlippinCarousel prevEl={prevRef} nextEl={nextRef} itemSize="55%">
+          { imageArray.map((item, index) => {
+            const image = generatePhotoPlaceholderURL(600, 600);
+              return (
+                <div style={placeholder}>
+                  <img src={image}  style={{pointerEvents: 'none', display: 'block', width: '100%'}} />
+                </div>
+              )
+          })}
+        </SlippinCarousel>
+      </div>
     </>
   );
 
