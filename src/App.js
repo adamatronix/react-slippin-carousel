@@ -1,21 +1,13 @@
-import logo from './logo.svg';
 import styled from 'styled-components';
 import { LazyBlurImage } from '@manualengineering/react-lazyblur';
 import SlippinCarousel from './components/SlippinCarousel/SlippinCarousel';
-import Image1 from './components/SlippinCarousel/assets/Found_2_DT_Caro_1.avif';
-import Image2 from './components/SlippinCarousel/assets/Found_2_DT_Caro_2.avif';
-import Image3 from './components/SlippinCarousel/assets/Found_2_DT_Caro_3.avif';
-import Image4 from './components/SlippinCarousel/assets/Found_2_DT_Caro_4.avif';
-import Image5 from './components/SlippinCarousel/assets/Found_2_DT_Caro_5.avif';
-import Image6 from './components/SlippinCarousel/assets/Found_2_DT_Caro_6.avif';
-import Image7 from './components/SlippinCarousel/assets/Found_2_DT_Caro_7.avif';
 import './App.css';
 
 const Item = styled.div` 
   margin: 0 0 0 30px;
 `
 
-const Image = styled.img` 
+const Image = styled(LazyBlurImage)` 
   display: block;
   pointer-events: none;
   width: 100%;
@@ -26,25 +18,46 @@ function App() {
     <div className="App">
       <SlippinCarousel itemSize={'55%'}>
         <Item>
-          <Image src={Image1} />
+          <Image src={'https://images.prismic.io/dave-reid/ac9eebda-1f4d-4218-8ded-e85ff84af95b_Found_2_DT_Caro_1.jpg?auto=compress%2Cformat'} placeholder={{
+            src: 'https://images.prismic.io/dave-reid/ac9eebda-1f4d-4218-8ded-e85ff84af95b_Found_2_DT_Caro_1.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
+            width: 947,
+            height: 947
+          }} />
         </Item>
         <Item>
-          <Image src={Image2} />
+          <Image src={'https://images.prismic.io/dave-reid/81a03a2a-4d04-4446-a3d5-35eb395bfedd_Found_2_DT_Caro_2.jpg?auto=compress%2Cformat'} placeholder={{
+            src: 'https://images.prismic.io/dave-reid/81a03a2a-4d04-4446-a3d5-35eb395bfedd_Found_2_DT_Caro_2.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
+            width: 947,
+            height: 947
+          }} />
         </Item>
         <Item>
-          <Image src={Image3} />
+          <Image src={'https://images.prismic.io/dave-reid/dd3bf56e-7a66-4271-baf5-b2f35d4d1a9c_Found_2_DT_Caro_3.jpg?auto=compress%2Cformat'} placeholder={{
+            src: 'https://images.prismic.io/dave-reid/dd3bf56e-7a66-4271-baf5-b2f35d4d1a9c_Found_2_DT_Caro_3.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
+            width: 947,
+            height: 947
+          }} />
         </Item>
         <Item>
-          <Image src={Image4} />
+          <Image src={'https://images.prismic.io/dave-reid/ea296f65-0451-4a2e-89a8-7e6d09089182_Found_2_DT_Caro_4.jpg?auto=compress%2Cformat'} placeholder={{
+            src: 'https://images.prismic.io/dave-reid/ea296f65-0451-4a2e-89a8-7e6d09089182_Found_2_DT_Caro_4.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
+            width: 947,
+            height: 947
+          }} />
         </Item>
         <Item>
-          <Image src={Image5} />
+          <Image src={'https://images.prismic.io/dave-reid/77d5d8e2-8220-4203-a255-76392e42d31f_Found_2_DT_Caro_5.jpg?auto=compress%2Cformat'} placeholder={{
+            src: 'https://images.prismic.io/dave-reid/77d5d8e2-8220-4203-a255-76392e42d31f_Found_2_DT_Caro_5.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
+            width: 947,
+            height: 947
+          }} />
         </Item>
         <Item>
-          <Image src={Image6} />
-        </Item>
-        <Item>
-          <Image src={Image7} />
+          <Image src={'https://images.prismic.io/dave-reid/9f778dda-0164-4ef8-9101-2310549e14a4_Found_2_DT_Caro_6.jpg?auto=compress%2Cformat'} placeholder={{
+            src: 'https://images.prismic.io/dave-reid/9f778dda-0164-4ef8-9101-2310549e14a4_Found_2_DT_Caro_6.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
+            width: 947,
+            height: 947
+          }} />
         </Item>
       </SlippinCarousel>
     </div>
