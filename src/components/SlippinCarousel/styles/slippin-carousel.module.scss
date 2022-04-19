@@ -37,17 +37,17 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity .2s ease;
-
-  &--dark {
-    color: white;
-    mix-blend-mode: difference;
-  }
-
-  &--light {
-    color: #111;
-  }
 }
 
-.cursor-show {
+.cursorDark {
+  color: white;
+  mix-blend-mode: difference;
+}
+
+.cursorLight {
+  color: #111;
+}
+
+.cursorShow {
   opacity: 1;
 }
