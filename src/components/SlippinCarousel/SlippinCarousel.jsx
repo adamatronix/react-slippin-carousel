@@ -6,7 +6,7 @@ import SlippingCarouselItem from './SlippingCarouseItem';
 import * as styles from './styles/slippin-carousel.module.scss';
 
 const SlippinCarousel = (props) => {
-  const { children, prevEl, nextEl, itemSize } = props;
+  const { children, prevEl, nextEl, itemSize, itemBackground } = props;
   const activeIndex = useRef(0);
   const [ containerEl, setContainerEl ] = useState();
   const thresholdStop = useRef();
@@ -231,7 +231,8 @@ const SlippinCarousel = (props) => {
 
       const style = {
         transform: `translate3d(${position}px, 0px, 0px)`,
-        zIndex: index
+        zIndex: index,
+        background: itemBackground || 'transparent'
       }
       return (
         <SlippingCarouselItem style={style} itemSize={itemSize} ref={(ref) => itemEl.current[index] = ref}>{child}</SlippingCarouselItem>
