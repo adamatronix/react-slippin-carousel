@@ -241,7 +241,6 @@ const SlippinCarousel = (props) => {
 
   const onDragStart = (e) => {
     const x = e.clientX || e.touches[0].clientX;
-    thresholdStop.current = calculateThresholdStopper();
     setReferencePositions(x);
   }
 
@@ -268,7 +267,6 @@ const SlippinCarousel = (props) => {
 
   const prevClick = () => {
     thresholdActive.current = false;
-    thresholdStop.current = calculateThresholdStopper();
     if(Active.current > 0) {
       Active.current--;
     } else {
@@ -280,8 +278,6 @@ const SlippinCarousel = (props) => {
   const nextClick = () => {
     if(thresholdActive.current)
       return;
-      
-    thresholdStop.current = calculateThresholdStopper();
     const width = itemWidth.current;
     const newIndex = Active.current + 1;
     const pinPoint = width * (newIndex*-1);
