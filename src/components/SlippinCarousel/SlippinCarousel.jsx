@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import cx from 'classnames/bind';
 import { gsap, TweenMax } from "gsap/all";
 import { DraggableCore } from 'react-draggable';
@@ -8,7 +8,7 @@ import * as styles from './styles/slippin-carousel.module.scss';
 const SlippinCarousel = (props) => {
   const { children, prevEl, nextEl, itemSize } = props;
   const activeIndex = useRef(0);
-  const containerEl = useRef();
+  const [ containerEl, setContainerEl ] = useState();
   const thresholdStop = useRef();
   const thresholdActive = useRef(false);
   const itemEl = useRef(new Array);
@@ -20,15 +20,24 @@ const SlippinCarousel = (props) => {
   const itemWidth = useRef();
 
   useEffect(() => {
-    pinnedItems.current[0] = true;
-    thresholdStop.current = calculateThresholdStopper();
     
-    if(prevEl && nextEl)
-      initUIButtons();
+    if(containerEl) {
+      pinnedItems.current[0] = true;
+      thresholdStop.current = calculateThresholdStopper();
+    
+      if(prevEl && nextEl)
+        initUIButtons();
 
-    getAnimationPositions(Active.current);
+      getAnimationPositions(Active.current);
+    }
 
-  }, []);
+  }, [containerEl]);
+
+  const containerReference = useCallback((node)=> {
+    if(node !== null) {
+      setContainerEl(node);
+    }
+  },[])
 
   const getPositionByIndex = (active, index, width) => {
     const shiftNumber = active * -1;
@@ -81,8 +90,8 @@ const SlippinCarousel = (props) => {
   }
 
   const calculateThresholdStopper = () => {
-    const containerWidth = containerEl.current.offsetWidth;
-    const containerX = containerEl.current.getBoundingClientRect().x;
+    const containerWidth = containerEl.offsetWidth;
+    const containerX = containerEl.getBoundingClientRect().x;
     const totalItems = itemEl.current.length;
     const lastItem = itemEl.current[totalItems-1];
     const lastItemWidth = lastItem.offsetWidth;
@@ -297,7 +306,7 @@ const SlippinCarousel = (props) => {
 
   return (
     <>
-    <div ref={containerEl}>
+    <div ref={containerReference}>
       <DraggableCore 
         onStart={onDragStart}
         onDrag={onDrag}
