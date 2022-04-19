@@ -382,9 +382,9 @@ const SlippinCarousel = (props) => {
     })} ref={containerReference}>
       {clickable ? <div ref={cursorReference} className={cx(styles.cursor,
       { 
-        [styles['cursor--light']]: cursorTheme === 'light' ? true : null,
-        [styles['cursor--dark']]: cursorTheme === 'dark' ? true : null,
-        [styles['cursor-show']]: cursorShow })}>
+        [styles['cursorLight']]: cursorTheme === 'light' ? true : null,
+        [styles['cursorDark']]: cursorTheme === 'dark' ? true : null,
+        [styles['cursorShow']]: cursorShow })}>
       { cursorDirection === 'next' ? clickableNextLabel : clickablePrevLabel}
       </div> : null}
       <DraggableCore 
