@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import cx from 'classnames/bind';
 import { gsap, TweenMax } from "gsap/all";
 import { DraggableCore } from 'react-draggable';
@@ -6,9 +6,9 @@ import SlippingCarouselItem from './SlippingCarouseItem';
 import * as styles from './styles/slippin-carousel.module.scss';
 
 const SlippinCarousel = (props) => {
-  const { children, prevEl, nextEl, itemSize } = props;
+  const { children, prevEl, nextEl, itemSize, itemBackground } = props;
   const activeIndex = useRef(0);
-  const containerEl = useRef();
+  const [ containerEl, setContainerEl ] = useState();
   const thresholdStop = useRef();
   const thresholdActive = useRef(false);
   const itemEl = useRef(new Array);
@@ -20,15 +20,24 @@ const SlippinCarousel = (props) => {
   const itemWidth = useRef();
 
   useEffect(() => {
-    pinnedItems.current[0] = true;
-    thresholdStop.current = calculateThresholdStopper();
     
-    if(prevEl && nextEl)
-      initUIButtons();
+    if(containerEl) {
+      pinnedItems.current[0] = true;
+      thresholdStop.current = calculateThresholdStopper();
+    
+      if(prevEl && nextEl)
+        initUIButtons();
 
-    getAnimationPositions(Active.current);
+      getAnimationPositions(Active.current);
+    }
 
-  }, []);
+  }, [containerEl]);
+
+  const containerReference = useCallback((node)=> {
+    if(node !== null) {
+      setContainerEl(node);
+    }
+  },[])
 
   const getPositionByIndex = (active, index, width) => {
     const shiftNumber = active * -1;
@@ -81,14 +90,19 @@ const SlippinCarousel = (props) => {
   }
 
   const calculateThresholdStopper = () => {
-    const containerWidth = containerEl.current.offsetWidth;
-    const containerX = containerEl.current.getBoundingClientRect().x;
+    const containerWidth = containerEl.offsetWidth;
+    const containerX = containerEl.getBoundingClientRect().x;
     const totalItems = itemEl.current.length;
     const lastItem = itemEl.current[totalItems-1];
     const lastItemWidth = lastItem.offsetWidth;
-    const originalX = lastItem.getBoundingClientRect().x;
+    let lastX = 0;
+    itemEl.current.forEach((item,index)=>{
+      if(index !== itemEl.current.length-1){
+        lastX += item.getBoundingClientRect().width;
+      }
+    })
 
-    return (containerWidth - originalX) - lastItemWidth + containerX;
+    return (containerWidth - lastX) - lastItemWidth + containerX;
   }
 
   const setAnimationByDrag = (diff) => {
@@ -222,7 +236,8 @@ const SlippinCarousel = (props) => {
 
       const style = {
         transform: `translate3d(${position}px, 0px, 0px)`,
-        zIndex: index
+        zIndex: index,
+        background: itemBackground || 'transparent'
       }
       return (
         <SlippingCarouselItem style={style} itemSize={itemSize} ref={(ref) => itemEl.current[index] = ref}>{child}</SlippingCarouselItem>
@@ -232,7 +247,6 @@ const SlippinCarousel = (props) => {
 
   const onDragStart = (e) => {
     const x = e.clientX || e.touches[0].clientX;
-    thresholdStop.current = calculateThresholdStopper();
     setReferencePositions(x);
   }
 
@@ -250,16 +264,17 @@ const SlippinCarousel = (props) => {
   }
 
   const onDrag = (e) => { 
-    const x = e.clientX || e.touches[0].clientX;
-    let currentPos = x;
-    let diff = currentPos - dragStart.current;
-    setReferencePositions(currentPos);
-    setAnimationByDrag(diff);
+    const x = e.clientX !== undefined ? e.clientX : e.touches ? e.touches[0].clientX : null;
+    if(x) {
+      let currentPos = x;
+      let diff = currentPos - dragStart.current;
+      setReferencePositions(currentPos);
+      setAnimationByDrag(diff);
+    }
   }
 
   const prevClick = () => {
     thresholdActive.current = false;
-    thresholdStop.current = calculateThresholdStopper();
     if(Active.current > 0) {
       Active.current--;
     } else {
@@ -271,8 +286,6 @@ const SlippinCarousel = (props) => {
   const nextClick = () => {
     if(thresholdActive.current)
       return;
-      
-    thresholdStop.current = calculateThresholdStopper();
     const width = itemWidth.current;
     const newIndex = Active.current + 1;
     const pinPoint = width * (newIndex*-1);
@@ -297,7 +310,7 @@ const SlippinCarousel = (props) => {
 
   return (
     <>
-    <div ref={containerEl}>
+    <div ref={containerReference}>
       <DraggableCore 
         onStart={onDragStart}
         onDrag={onDrag}
