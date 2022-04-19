@@ -32,12 +32,20 @@
 
 .cursor {
   position: absolute;
-  color: white;
+  
   z-index: 99;
   pointer-events: none;
   opacity: 0;
   transition: opacity .2s ease;
-  mix-blend-mode: difference;
+
+  &--dark {
+    color: white;
+    mix-blend-mode: difference;
+  }
+
+  &--light {
+    color: #111;
+  }
 }
 
 .cursor-show {

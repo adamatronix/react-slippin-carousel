@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <SlippinCarousel clickable clickableNextLabel={<ControlsComponent>Next</ControlsComponent>} clickablePrevLabel={<ControlsComponent>Prev</ControlsComponent>} itemSize={'55%'}>
-        <SlippingCarouseItem>
+        <SlippingCarouseItem theme={'dark'}>
           <Item>
             <Image src={'https://images.prismic.io/dave-reid/ac9eebda-1f4d-4218-8ded-e85ff84af95b_Found_2_DT_Caro_1.jpg?auto=compress%2Cformat'} placeholder={{
               src: 'https://images.prismic.io/dave-reid/ac9eebda-1f4d-4218-8ded-e85ff84af95b_Found_2_DT_Caro_1.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
@@ -31,7 +31,7 @@ function App() {
             }} />
           </Item>
         </SlippingCarouseItem>
-        <SlippingCarouseItem>
+        <SlippingCarouseItem theme={'dark'}>
           <Item>
             <Image src={'https://images.prismic.io/dave-reid/81a03a2a-4d04-4446-a3d5-35eb395bfedd_Found_2_DT_Caro_2.jpg?auto=compress%2Cformat'} placeholder={{
               src: 'https://images.prismic.io/dave-reid/81a03a2a-4d04-4446-a3d5-35eb395bfedd_Found_2_DT_Caro_2.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
@@ -40,7 +40,7 @@ function App() {
             }} />
           </Item>
         </SlippingCarouseItem>
-        <SlippingCarouseItem>
+        <SlippingCarouseItem theme={'dark'}>
           <Item>
             <Image src={'https://images.prismic.io/dave-reid/dd3bf56e-7a66-4271-baf5-b2f35d4d1a9c_Found_2_DT_Caro_3.jpg?auto=compress%2Cformat'} placeholder={{
               src: 'https://images.prismic.io/dave-reid/dd3bf56e-7a66-4271-baf5-b2f35d4d1a9c_Found_2_DT_Caro_3.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
@@ -49,7 +49,16 @@ function App() {
             }} />
           </Item>
         </SlippingCarouseItem>
-        <SlippingCarouseItem>
+        <SlippingCarouseItem theme={'light'}>
+          <Item>
+            <Image src={'https://images.prismic.io/dave-reid/fb5f9e86-6e93-47e8-8db5-0f100d7287ef_IT_8_DT_ITPost_2.jpg?auto=compress%2Cformat'} placeholder={{
+              src: 'https://images.prismic.io/dave-reid/fb5f9e86-6e93-47e8-8db5-0f100d7287ef_IT_8_DT_ITPost_2.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
+              width: 947,
+              height: 947
+            }} />
+          </Item>
+        </SlippingCarouseItem>
+        <SlippingCarouseItem theme={'light'}>
           <Item>
             <Image src={'https://images.prismic.io/dave-reid/ea296f65-0451-4a2e-89a8-7e6d09089182_Found_2_DT_Caro_4.jpg?auto=compress%2Cformat'} placeholder={{
               src: 'https://images.prismic.io/dave-reid/ea296f65-0451-4a2e-89a8-7e6d09089182_Found_2_DT_Caro_4.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
@@ -58,7 +67,7 @@ function App() {
             }} />
           </Item>
         </SlippingCarouseItem>
-        <SlippingCarouseItem>
+        <SlippingCarouseItem theme={'dark'}>
           <Item>
             <Image src={'https://images.prismic.io/dave-reid/77d5d8e2-8220-4203-a255-76392e42d31f_Found_2_DT_Caro_5.jpg?auto=compress%2Cformat'} placeholder={{
               src: 'https://images.prismic.io/dave-reid/77d5d8e2-8220-4203-a255-76392e42d31f_Found_2_DT_Caro_5.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
@@ -67,7 +76,7 @@ function App() {
             }} />
           </Item>
         </SlippingCarouseItem>
-        <SlippingCarouseItem>
+        <SlippingCarouseItem theme={'light'}>
           <Item>
             <Image src={'https://images.prismic.io/dave-reid/9f778dda-0164-4ef8-9101-2310549e14a4_Found_2_DT_Caro_6.jpg?auto=compress%2Cformat'} placeholder={{
               src: 'https://images.prismic.io/dave-reid/9f778dda-0164-4ef8-9101-2310549e14a4_Found_2_DT_Caro_6.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',

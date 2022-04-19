@@ -12,6 +12,7 @@ const SlippinCarousel = (props) => {
   const [ cursorEl, setCursorEl ] = useState();
   const [ cursorDirection, setCursorDirection ] = useState();
   const [ cursorShow, setCursorShow ] = useState(0);
+  const [ cursorTheme, setCursorTheme ] = useState(null);
   const thresholdStop = useRef();
   const thresholdActive = useRef(false);
   const itemEl = useRef(new Array);
@@ -248,12 +249,13 @@ const SlippinCarousel = (props) => {
         background: itemBackground || 'transparent'
       }
 
+      console.log(child.props);
       if(React.isValidElement(child)) {
         return React.cloneElement(child,
         { style: style, 
           itemSize: itemSize, 
           onMouseMove: onItemMove, 
-          onMouseEnter: ()=>onItemEnter(index), 
+          onMouseEnter: ()=>onItemEnter(index,child.props.theme || 'light'), 
           onMouseLeave: ()=>setCursorShow(false),
           onClick:()=>onItemClick(index),
           ref:(ref) => itemEl.current[index] = ref
@@ -287,9 +289,10 @@ const SlippinCarousel = (props) => {
     })
   }
 
-  const onItemEnter = (index) => {
+  const onItemEnter = (index, theme) => {
     if(clickable) {
       setCursorShow(true);
+      setCursorTheme(theme);
       if(Active.current === index || Active.current === itemEl.current.length - 1) { 
         setCursorDirection('prev');
       } else { 
@@ -372,6 +375,8 @@ const SlippinCarousel = (props) => {
     })} ref={containerReference}>
       {clickable ? <div ref={cursorReference} className={cx(styles.cursor,
       { 
+        [styles['cursor--light']]: cursorTheme === 'light' ? true : null,
+        [styles['cursor--dark']]: cursorTheme === 'dark' ? true : null,
         [styles['cursor-show']]: cursorShow })}>
       { cursorDirection === 'next' ? clickableNextLabel : clickablePrevLabel}
       </div> : null}
