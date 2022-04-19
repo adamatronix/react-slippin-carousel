@@ -238,9 +238,8 @@ const SlippinCarousel = (props) => {
   }
 
   const getItems = ( positions, items ) => {
-    
-    return items.map((child,index) => {
 
+    return React.Children.map(items, (child, index) => {
       const position = positions ? positions[index] : 0;
 
       const style = {
@@ -248,18 +247,20 @@ const SlippinCarousel = (props) => {
         zIndex: index,
         background: itemBackground || 'transparent'
       }
-      return (
-        <SlippingCarouselItem 
-          style={style} 
-          itemSize={itemSize} 
-          onMouseMove={onItemMove}
-          onMouseEnter={()=>onItemEnter(index)} 
-          onMouseLeave={()=>setCursorShow(false)}
-          onClick={()=>onItemClick(index)} 
-          ref={(ref) => itemEl.current[index] = ref}
-        >{child}</SlippingCarouselItem>
-      )
-    })
+
+      if(React.isValidElement(child)) {
+        return React.cloneElement(child,
+        { style: style, 
+          itemSize: itemSize, 
+          onMouseMove: onItemMove, 
+          onMouseEnter: ()=>onItemEnter(index), 
+          onMouseLeave: ()=>setCursorShow(false),
+          onClick:()=>onItemClick(index),
+          ref:(ref) => itemEl.current[index] = ref
+        });
+      }
+      return child;
+    });
   }
 
   const onItemClick = (index) => {
