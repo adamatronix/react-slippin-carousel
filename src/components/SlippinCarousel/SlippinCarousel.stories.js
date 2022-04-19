@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import SlippinCarousel from './SlippinCarousel';
+import SlippingCarouseItem from './SlippingCarouseItem';
 import { generatePhotoPlaceholderURL } from 'react-placeholder-image';
 
 
@@ -41,9 +42,11 @@ export const Default = () => {
           { imageArray.map((item, index) => {
             const image = generatePhotoPlaceholderURL(600, 600);
               return (
-                <div style={placeholder}>
-                  <img src={image}  style={{pointerEvents: 'none', display: 'block', width: '100%'}} />
-                </div>
+                <SlippingCarouseItem>
+                  <div style={placeholder}>
+                    <img src={image}  style={{pointerEvents: 'none', display: 'block', width: '100%'}} />
+                  </div>
+                </SlippingCarouseItem>
               )
           })}
         </SlippinCarousel>
