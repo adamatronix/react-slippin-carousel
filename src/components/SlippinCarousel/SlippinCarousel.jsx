@@ -9,6 +9,7 @@ const SlippinCarousel = (props) => {
   const { children, prevEl, nextEl, clickable, clickableNextLabel, clickablePrevLabel, itemSize, itemBackground } = props;
   const activeIndex = useRef(0);
   const [ containerEl, setContainerEl ] = useState();
+  const [ itemsReady, setItemsReady ] = useState(false);
   const [ cursorEl, setCursorEl ] = useState();
   const [ cursorDirection, setCursorDirection ] = useState();
   const [ cursorShow, setCursorShow ] = useState(0);
@@ -25,7 +26,7 @@ const SlippinCarousel = (props) => {
 
   useEffect(() => {
     
-    if(containerEl) {
+    if(containerEl && itemsReady) {
       pinnedItems.current[0] = true;
       thresholdStop.current = calculateThresholdStopper();
     
@@ -35,7 +36,7 @@ const SlippinCarousel = (props) => {
       getAnimationPositions(Active.current);
     }
 
-  }, [containerEl]);
+  }, [containerEl, itemsReady]);
 
   const containerReference = useCallback((node)=> {
     if(node !== null) {
@@ -46,6 +47,16 @@ const SlippinCarousel = (props) => {
   const cursorReference = useCallback((node)=> {
     if(node !== null) {
       setCursorEl(node);
+    }
+  },[])
+
+  const itemReference = useCallback((node)=>{
+    if(node !== null) {
+      itemEl.current.push(node);
+
+      if(itemEl.current.length === children.length) {
+        setItemsReady(true);
+      }
     }
   },[])
 
@@ -249,7 +260,6 @@ const SlippinCarousel = (props) => {
         background: itemBackground || 'transparent'
       }
 
-      console.log(child.props);
       if(React.isValidElement(child)) {
         return React.cloneElement(child,
         { style: style, 
@@ -258,7 +268,7 @@ const SlippinCarousel = (props) => {
           onMouseEnter: ()=>onItemEnter(index,child.props.theme || 'light'), 
           onMouseLeave: ()=>setCursorShow(false),
           onClick:()=>onItemClick(index),
-          ref:(ref) => itemEl.current[index] = ref
+          ref:itemReference
         });
       }
       return child;
