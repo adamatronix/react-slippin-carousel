@@ -50,16 +50,6 @@ const SlippinCarousel = (props) => {
     }
   },[])
 
-  const itemReference = useCallback((node)=>{
-    if(node !== null) {
-      itemEl.current.push(node);
-
-      if(itemEl.current.length === children.length) {
-        setItemsReady(true);
-      }
-    }
-  },[])
-
   const getPositionByIndex = (active, index, width) => {
     const shiftNumber = active * -1;
     return index >= active ? (shiftNumber) * width : (index*-1) * width;
@@ -249,6 +239,12 @@ const SlippinCarousel = (props) => {
      }
   }
 
+  const readyCheck = () => {
+    if(itemEl.current.length === children.length) {
+      setItemsReady(true);
+    }
+  }
+
   const getItems = ( positions, items ) => {
 
     return React.Children.map(items, (child, index) => {
@@ -268,7 +264,8 @@ const SlippinCarousel = (props) => {
           onMouseEnter: ()=>onItemEnter(index,child.props.theme || 'light'), 
           onMouseLeave: ()=>setCursorShow(false),
           onClick:()=>onItemClick(index),
-          ref:itemReference
+          registerRef: itemEl.current,
+          readyCheck: readyCheck
         });
       }
       return child;
