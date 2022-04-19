@@ -1,3 +1,12 @@
+.wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.clickable {
+  cursor: none;
+}
+
 .container {
   z-index: 1;
   list-style: none;
@@ -19,4 +28,18 @@
   width: auto;
   height: auto;
   flex-shrink: 0;
+}
+
+.cursor {
+  position: absolute;
+  color: white;
+  z-index: 99;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-show {
+  opacity: 1;
 }

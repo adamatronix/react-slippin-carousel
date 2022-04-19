@@ -6,9 +6,12 @@ import SlippingCarouselItem from './SlippingCarouseItem';
 import * as styles from './styles/slippin-carousel.module.scss';
 
 const SlippinCarousel = (props) => {
-  const { children, prevEl, nextEl, itemSize, itemBackground } = props;
+  const { children, prevEl, nextEl, clickable, clickableNextLabel, clickablePrevLabel, itemSize, itemBackground } = props;
   const activeIndex = useRef(0);
   const [ containerEl, setContainerEl ] = useState();
+  const [ cursorEl, setCursorEl ] = useState();
+  const [ cursorDirection, setCursorDirection ] = useState();
+  const [ cursorShow, setCursorShow ] = useState(0);
   const thresholdStop = useRef();
   const thresholdActive = useRef(false);
   const itemEl = useRef(new Array);
@@ -36,6 +39,12 @@ const SlippinCarousel = (props) => {
   const containerReference = useCallback((node)=> {
     if(node !== null) {
       setContainerEl(node);
+    }
+  },[])
+
+  const cursorReference = useCallback((node)=> {
+    if(node !== null) {
+      setCursorEl(node);
     }
   },[])
 
@@ -240,18 +249,63 @@ const SlippinCarousel = (props) => {
         background: itemBackground || 'transparent'
       }
       return (
-        <SlippingCarouselItem style={style} itemSize={itemSize} ref={(ref) => itemEl.current[index] = ref}>{child}</SlippingCarouselItem>
+        <SlippingCarouselItem 
+          style={style} 
+          itemSize={itemSize} 
+          onMouseMove={onItemMove}
+          onMouseEnter={()=>onItemEnter(index)} 
+          onMouseLeave={()=>setCursorShow(false)}
+          onClick={()=>onItemClick(index)} 
+          ref={(ref) => itemEl.current[index] = ref}
+        >{child}</SlippingCarouselItem>
       )
     })
   }
 
+  const onItemClick = (index) => {
+    if(clickable) {
+      if(Active.current === index || Active.current === itemEl.current.length - 1) { 
+        prevClick();
+      } else { 
+        nextClick();
+      }
+    }
+    
+  }
+
+  const onItemMove = (e) => {
+    const containerBounding = containerEl.getBoundingClientRect();
+    const x = e.clientX - containerBounding.x;
+    const y = e.clientY - containerBounding.y;
+
+    gsap.to(cursorEl, {
+      x: x,
+      y: y,
+      duration: 2,
+      ease: 'elastic.out(.8, .5)',
+    })
+  }
+
+  const onItemEnter = (index) => {
+    if(clickable) {
+      setCursorShow(true);
+      if(Active.current === index || Active.current === itemEl.current.length - 1) { 
+        setCursorDirection('prev');
+      } else { 
+        setCursorDirection('next');
+      }
+    }
+  }
+
   const onDragStart = (e) => {
-    const x = e.clientX || e.touches[0].clientX;
-    setReferencePositions(x);
+    if(!clickable) {
+      const x = e.clientX || e.touches[0].clientX;
+      setReferencePositions(x);
+    } 
   }
 
   const onDragEnd = (e) => {
-    if(!thresholdActive.current) {
+    if(!thresholdActive.current && !clickable) {
       getAnimationPositions(Active.current);
     }
   }
@@ -264,12 +318,14 @@ const SlippinCarousel = (props) => {
   }
 
   const onDrag = (e) => { 
-    const x = e.clientX !== undefined ? e.clientX : e.touches ? e.touches[0].clientX : null;
-    if(x) {
-      let currentPos = x;
-      let diff = currentPos - dragStart.current;
-      setReferencePositions(currentPos);
-      setAnimationByDrag(diff);
+    if(!clickable) {
+      const x = e.clientX !== undefined ? e.clientX : e.touches ? e.touches[0].clientX : null;
+      if(x) {
+        let currentPos = x;
+        let diff = currentPos - dragStart.current;
+        setReferencePositions(currentPos);
+        setAnimationByDrag(diff);
+      }
     }
   }
 
@@ -310,7 +366,14 @@ const SlippinCarousel = (props) => {
 
   return (
     <>
-    <div ref={containerReference}>
+    <div className={cx(styles.wrapper, {
+      [styles['clickable']]: clickable
+    })} ref={containerReference}>
+      {clickable ? <div ref={cursorReference} className={cx(styles.cursor,
+      { 
+        [styles['cursor-show']]: cursorShow })}>
+      { cursorDirection === 'next' ? clickableNextLabel : clickablePrevLabel}
+      </div> : null}
       <DraggableCore 
         onStart={onDragStart}
         onDrag={onDrag}

@@ -13,10 +13,14 @@ const Image = styled(LazyBlurImage)`
   width: 100%;
 `
 
+const ControlsComponent = styled.div` 
+  font-size: 50px;
+`
+
 function App() {
   return (
     <div className="App">
-      <SlippinCarousel itemSize={'55%'}>
+      <SlippinCarousel clickable clickableNextLabel={<ControlsComponent>Next</ControlsComponent>} clickablePrevLabel={<ControlsComponent>Prev</ControlsComponent>} itemSize={'55%'}>
         <Item>
           <Image src={'https://images.prismic.io/dave-reid/ac9eebda-1f4d-4218-8ded-e85ff84af95b_Found_2_DT_Caro_1.jpg?auto=compress%2Cformat'} placeholder={{
             src: 'https://images.prismic.io/dave-reid/ac9eebda-1f4d-4218-8ded-e85ff84af95b_Found_2_DT_Caro_1.jpg?auto=compress%2Cformat&w=50&blur=50&q=10',
