@@ -95,9 +95,14 @@ const SlippinCarousel = (props) => {
     const totalItems = itemEl.current.length;
     const lastItem = itemEl.current[totalItems-1];
     const lastItemWidth = lastItem.offsetWidth;
-    const originalX = lastItem.getBoundingClientRect().x;
+    let lastX = 0;
+    itemEl.current.forEach((item,index)=>{
+      if(index !== itemEl.current.length-1){
+        lastX += item.getBoundingClientRect().width;
+      }
+    })
 
-    return (containerWidth - originalX) - lastItemWidth + containerX;
+    return (containerWidth - lastX) - lastItemWidth + containerX;
   }
 
   const setAnimationByDrag = (diff) => {
@@ -259,11 +264,13 @@ const SlippinCarousel = (props) => {
   }
 
   const onDrag = (e) => { 
-    const x = e.clientX || e.touches[0].clientX;
-    let currentPos = x;
-    let diff = currentPos - dragStart.current;
-    setReferencePositions(currentPos);
-    setAnimationByDrag(diff);
+    const x = e.clientX !== undefined ? e.clientX : e.touches ? e.touches[0].clientX : null;
+    if(x) {
+      let currentPos = x;
+      let diff = currentPos - dragStart.current;
+      setReferencePositions(currentPos);
+      setAnimationByDrag(diff);
+    }
   }
 
   const prevClick = () => {
