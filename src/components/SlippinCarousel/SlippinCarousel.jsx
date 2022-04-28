@@ -288,11 +288,9 @@ const SlippinCarousel = (props) => {
     const x = e.clientX - containerBounding.x;
     const y = e.clientY - containerBounding.y;
 
-    gsap.to(cursorEl, {
+    gsap.set(cursorEl, {
       x: x,
-      y: y,
-      duration: 2,
-      ease: 'elastic.out(.8, .5)',
+      y: y
     })
   }
 
